@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
+		<style type="text/css">
+			.emm{
+				height:00px;
+				width:500px;
+				perspective: 900px;
+				margin-left: 30%;
+				margin-top: 10%;
+			}
+			.emm div{
+				position: absolute;
+				height: 161px;
+				width: 89px;
+				top:32px;
+				left: 208px;
+				background: #EF9394;
+				border-radius: 90px 90px 0 0;
+				transform-origin: top;
+				transform-origin: 50% 72%;
+				transition: all 1s;
+			}
+			.emm div:nth-child(1){
+				transform:rotateX(60deg) rotateY(3deg) rotateZ(-74deg);
+				box-shadow: -32px 6px 10px #874849;
+			}
+			.emm div:nth-child(2){
+				transform:rotateX(60deg) rotateY(3deg) rotateZ(16deg);
+				box-shadow: 11px 27px 9px #874849;
+			}
+			.emm:hover div:nth-child(1){
+				transform: rotate3d(0,0,40,-45deg);
+				box-shadow: -50px 7px 16px #fff;
+			}
+			.emm:hover div:nth-child(2){
+				transform: rotate3d(0,0,45,46deg);
+				box-shadow: 10px 40px 16px #fff;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="emm">
+			<div></div>
+			<div></div>
+		</div>
+	</body>
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<script src="https://cdn.bootcss.com/element-ui/2.12.0/index.js"></script>
+	<script>
+		(function(window, document, undefined) {
+    var hearts = [];
+    window.requestAnimationFrame = (function() {
+        return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(callback) {
+            setTimeout(callback, 1000 / 60);
+        }
+    })();
+    init();
+    function init() {
+        css(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: absolute;}.heart:after{top: -5px;}.heart:before{left: -5px;}");
+        attachEvent();
+        gameloop();
+    }
+    function gameloop() {
+        for (var i = 0; i < hearts.length; i++) {
+            if (hearts[i].alpha <= 0) {
+                document.body.removeChild(hearts[i].el);
+                hearts.splice(i, 1);
+                continue;
+            }
+            hearts[i].y--;
+            hearts[i].scale += 0.004;
+            hearts[i].alpha -= 0.013;
+            hearts[i].el.style.cssText = "left:" + hearts[i].x + "px;top:" + hearts[i].y + "px;opacity:" + hearts[i].alpha + ";transform:scale(" + hearts[i].scale + "," + hearts[i].scale + ") rotate(45deg);background:" + hearts[i].color;
+        }
+        requestAnimationFrame(gameloop);
+    }
+    function attachEvent() {
+        var old = typeof window.onclick === "function" && window.onclick;
+        window.onclick = function(event) {
+            old && old();
+            createHeart(event);
+        }
+    }
+    function createHeart(event) {
+        var d = document.createElement("div");
+        d.className = "heart";
+        hearts.push({
+            el: d,
+            x: event.clientX - 5,
+            y: event.clientY - 5,
+            scale: 1,
+            alpha: 1,
+            color: randomColor()
+        });
+        document.body.appendChild(d);
+    }
+    function css(css) {
+        var style = document.createElement("style");
+        style.type = "text/css";
+        try {
+            style.appendChild(document.createTextNode(css));
+        } catch (ex) {
+            style.styleSheet.cssText = css;
+        }
+        document.getElementsByTagName('head')[0].appendChild(style);
+    }
+    function randomColor() {
+        // return "rgb(" + (~~ (Math.random() * 255)) + "," + (~~ (Math.random() * 255)) + "," + (~~ (Math.random() * 255)) + ")";
+        return "rgb(239,147,148)"
+    }
+})(window, document);
+	</script>
+</html>
